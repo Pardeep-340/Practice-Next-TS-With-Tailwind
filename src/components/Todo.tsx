@@ -3,10 +3,21 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+// Define an interface for the form data
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
 const Todo = () => {
-    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<FormData>();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [show, setShow] = useState(false);
+    const [formData, setFormData] = useState<FormData | null>(null);
 
     const togglePasswordVisibility = () => {
         setShowPassword(prevState => !prevState);
@@ -16,8 +27,9 @@ const Todo = () => {
         setShowConfirmPassword(prevState => !prevState);
     };
 
-    const submitHandler = (data: object) => {
-        console.log(data);
+    const submitHandler = (data: FormData) => {
+        setFormData(data);
+        setShow(true);
         reset();
     };
 
@@ -32,7 +44,7 @@ const Todo = () => {
                         placeholder='First Name'
                         className='w-full py-2 px-4 outline-none rounded-lg'
                     />
-                    {errors.firstName && <p className='text-red-500'>{errors.firstName.message as string}</p>}
+                    {errors.firstName && <p className='text-red-500'>{errors.firstName.message}</p>}
 
                     <input
                         {...register('lastName', { required: 'Last name is required.' })}
@@ -40,7 +52,7 @@ const Todo = () => {
                         placeholder='Last Name'
                         className='w-full py-2 px-4 outline-none rounded-lg mt-4'
                     />
-                    {errors.lastName && <p className='text-red-500'>{errors.lastName.message as string}</p>}
+                    {errors.lastName && <p className='text-red-500'>{errors.lastName.message}</p>}
 
                     <input
                         {...register('email', {
@@ -54,7 +66,7 @@ const Todo = () => {
                         placeholder='Email'
                         className='w-full py-2 px-4 outline-none rounded-lg mt-4'
                     />
-                    {errors.email && <p className='text-red-500'>{errors.email.message as string}</p>}
+                    {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
 
                     <div className='relative w-full'>
                         <input
@@ -75,7 +87,7 @@ const Todo = () => {
                         >
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
-                        {errors.password && <p className='text-red-500'>{errors.password.message as string}</p>}
+                        {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
                     </div>
 
                     <div className='relative w-full'>
@@ -94,13 +106,23 @@ const Todo = () => {
                         >
                             {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
-                        {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message as string}</p>}
+                        {errors.confirmPassword && <p className='text-red-500'>{errors.confirmPassword.message}</p>}
                     </div>
 
                     <div className='text-center pt-4'>
                         <button type='submit' className='px-5 py-2 bg-black text-white rounded-xl'>Submit</button>
                     </div>
                 </form>
+
+                {show && formData && (
+                    <div className="mt-4 bg-white p-4 rounded-lg">
+                        <p><strong>First Name:</strong> {formData.firstName}</p>
+                        <p><strong>Last Name:</strong> {formData.lastName}</p>
+                        <p><strong>Email:</strong> {formData.email}</p>
+                        <p><strong>Password:</strong> {formData.password}</p>
+                        <p><strong>Confirm Password:</strong> {formData.confirmPassword}</p>
+                    </div>
+                )}
             </div>
         </div>
     );
