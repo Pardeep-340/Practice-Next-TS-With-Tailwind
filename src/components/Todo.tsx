@@ -53,11 +53,12 @@ const Todo = () => {
     const handleDelete = (index: number) => {
         const updatedFormDataList = formDataList.filter((_, i) => i !== index);
         setFormDataList(updatedFormDataList);
+        reset();
     };
 
     return (
         <div className='mt-6'>
-            <div className='max-w-[600px] py-8 px-6 bg-gray-400 mx-auto rounded-lg'>
+            <div className='max-w-[500px] py-8 px-6 bg-gray-400 mx-auto rounded-lg'>
                 <h1 className='text-4xl font-bold text-center pb-5'>Todo List</h1>
                 <form onSubmit={handleSubmit(submitHandler)}>
                     <div className='relative'>
@@ -137,7 +138,7 @@ const Todo = () => {
                         {errors.confirmPassword && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.confirmPassword.message}</p>}
                     </div>
 
-                    <div className='text-center pt-4'>
+                    <div className='text-center pt-5'>
                         <button type='submit' className='px-5 py-2 bg-black text-white rounded-xl'>
                             {editIndex !== null ? 'Update' : 'Submit'}
                         </button>
