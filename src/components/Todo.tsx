@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-// Define an interface for the form data
 interface FormData {
     firstName: string;
     lastName: string;
@@ -57,8 +56,8 @@ const Todo = () => {
     };
 
     return (
-        <div className='mt-6'>
-            <div className='max-w-[500px] py-8 px-6 bg-gray-400 mx-auto rounded-lg'>
+        <div className='mt-6 px-4'>
+            <div className='max-w-[600px] py-8 px-6 bg-gray-400 mx-auto rounded-lg'>
                 <h1 className='text-4xl font-bold text-center pb-5'>Todo List</h1>
                 <form onSubmit={handleSubmit(submitHandler)}>
                     <div className='relative'>
@@ -68,7 +67,7 @@ const Todo = () => {
                             placeholder='First Name'
                             className='w-full py-2 px-4 outline-none rounded-lg'
                         />
-                        {errors.firstName && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.firstName.message}</p>}
+                        {errors.firstName && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.firstName.message}</p>}
                     </div>
 
                     <div className='relative'>
@@ -76,9 +75,9 @@ const Todo = () => {
                             {...register('lastName', { required: 'Last name is required.' })}
                             type="text"
                             placeholder='Last Name'
-                            className='w-full py-2 px-4 outline-none rounded-lg mt-5'
+                            className='w-full py-2 px-4 outline-none rounded-lg mt-7'
                         />
-                        {errors.lastName && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.lastName.message}</p>}
+                        {errors.lastName && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.lastName.message}</p>}
 
                     </div>
                     <div className='relative'>
@@ -92,31 +91,36 @@ const Todo = () => {
                             })}
                             type="email"
                             placeholder='Email'
-                            className='w-full py-2 px-4 outline-none rounded-lg mt-5'
+                            className='w-full py-2 px-4 outline-none rounded-lg mt-7'
                         />
-                        {errors.email && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.email.message}</p>}
+                        {errors.email && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.email.message}</p>}
                     </div>
 
                     <div className='relative w-full'>
                         <input
                             {...register('password', {
-                                required: 'Password is required.',
+                                required: 'Please Enter Your Password 8-16 characters long.',
                                 minLength: {
                                     value: 8,
-                                    message: 'Password must be at least 8 characters.'
-                                }
+                                    message: 'Please Enter Your Password 8-16 characters long.'
+                                },
+                                pattern: {
+                                    value:
+                                        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/,
+                                    message: "Password must include an uppercase letter, a lowercase letter, a number, and a special character.",
+                                },
                             })}
                             type={showPassword ? 'text' : 'password'}
                             placeholder='Password'
-                            className='w-full py-2 px-4 outline-none rounded-lg mt-5'
+                            className='w-full py-2 px-4 outline-none rounded-lg mt-7'
                         />
                         <span
-                            className='absolute right-3 top-8 cursor-pointer'
+                            className='absolute right-3 top-[38px] cursor-pointer'
                             onClick={togglePasswordVisibility}
                         >
                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
-                        {errors.password && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.password.message}</p>}
+                        {errors.password && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.password.message}</p>}
                     </div>
 
                     <div className='relative w-full'>
@@ -127,15 +131,15 @@ const Todo = () => {
                             })}
                             type={showConfirmPassword ? 'text' : 'password'}
                             placeholder='Confirm Password'
-                            className='w-full py-2 px-4 outline-none rounded-lg mt-5'
+                            className='w-full py-2 px-4 outline-none rounded-lg mt-7'
                         />
                         <span
-                            className='absolute right-3 top-8 cursor-pointer'
+                            className='absolute right-3 top-[38px] cursor-pointer'
                             onClick={toggleConfirmPasswordVisibility}
                         >
                             {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                         </span>
-                        {errors.confirmPassword && <p className='text-red-500 absolute text-sm -bottom-5 left-0'>{errors.confirmPassword.message}</p>}
+                        {errors.confirmPassword && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.confirmPassword.message}</p>}
                     </div>
 
                     <div className='text-center pt-5'>
