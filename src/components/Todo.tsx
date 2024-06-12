@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 interface FormData {
     firstName: string;
@@ -10,6 +13,8 @@ interface FormData {
     password: string;
     confirmPassword: string;
 }
+
+const MySwal = withReactContent(Swal);
 
 const Todo = () => {
     const { register, handleSubmit, watch, setValue, formState: { errors }, reset } = useForm<FormData>();
@@ -27,6 +32,18 @@ const Todo = () => {
     };
 
     const submitHandler = (data: FormData) => {
+        const emailExists = formDataList.some((item, index) => item.email === data.email && index !== editIndex);
+
+        if (emailExists) {
+            MySwal.fire({
+                title: 'Error!',
+                text: 'This email is already in use.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
         if (editIndex !== null) {
             const updatedFormDataList = formDataList.map((item, index) =>
                 index === editIndex ? data : item
@@ -78,8 +95,8 @@ const Todo = () => {
                             className='w-full py-2 px-4 outline-none rounded-lg mt-7'
                         />
                         {errors.lastName && <p className='text-red-500 absolute text-xs -bottom-5 left-0'>{errors.lastName.message}</p>}
-
                     </div>
+
                     <div className='relative'>
                         <input
                             {...register('email', {
@@ -150,7 +167,7 @@ const Todo = () => {
                 </form>
             </div>
             {formDataList.length > 0 && (
-                <div className="mt-4 bg-gray-300 p-4 rounded-lg max-w-[600px] mx-auto">
+                <div className="mt-4 bg-gray-300 p-4 rounded-lg max-w-[700px] mx-auto">
                     {formDataList.map((obj, index) => (
                         <div key={index} className={`bg-white p-4 rounded-lg ${index === 0 ? "mt-0" : "mt-4"}`}>
                             <div className='flex items-center justify-between'>
