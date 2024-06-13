@@ -1,7 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import { focusTableList } from "./Helper";
-const setPage = 4;
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import withReactContent from 'sweetalert2-react-content';
+
+const setPage = 10;
+const MySwal = withReactContent(Swal);
 
 const Select = () => {
   const [selected, setSelected] = useState("firstName");
@@ -9,8 +14,8 @@ const Select = () => {
   const [studentList, setStudentList] = useState(focusTableList);
   const [noResults, setNoResults] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [startPage, setStartPage] = useState("")
-  const [endPage, setEndPage] = useState("")
+  const [startPage, setStartPage] = useState(0)
+  const [endPage, setEndPage] = useState(10)
 
   function searchStudentList(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,17 +23,27 @@ const Select = () => {
       if (selected === "firstName") {
         return student.firstName
           .toLowerCase()
-          .includes(studentInput.toLowerCase());
+          .match(studentInput.toLowerCase());
       } else if (selected === "lastName") {
         return student.lastName
           .toLowerCase()
-          .includes(studentInput.toLowerCase());
+          .match(studentInput.toLowerCase());
       } else if (selected === "email") {
-        return student.email.toLowerCase().includes(studentInput.toLowerCase());
+        return student.email.toLowerCase().match(studentInput.toLowerCase());
       }
       return false;
     });
-    setStudentList(filteredStudentList);
+    const listRange = filteredStudentList.slice(startPage, endPage);
+    if (startPage < endPage) {
+      setStudentList(listRange);
+    } else {
+      MySwal.fire({
+        title: 'Error!',
+        text: 'Invalid Range',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
     setCurrentPage(1);
     setNoResults(filteredStudentList.length === 0);
   }
@@ -65,9 +80,9 @@ const Select = () => {
             <div className="w-full flex items-center justify-between mt-4">
               <div className="flex items-center gap-3">
                 <p>Rage</p>
-                <input type="text" className="border-2 px-2 h-8 w-10" />
+                <input value={startPage} onChange={(e) => setStartPage(Number(e.target.value))} type="text" className="border-2 px-2 h-8 w-10" />
                 <p>to</p>
-                <input type="text" className="border-2 px-2 h-8 w-10" />
+                <input value={endPage} onChange={(e) => setEndPage(Number(e.target.value))} type="text" className="border-2 px-2 h-8 w-10" />
               </div>
               <button
                 type="submit"
@@ -81,7 +96,6 @@ const Select = () => {
         {noResults && (
           <p className="font-bold text-xl absolute top-[90px]">No Result Found</p>
         )}
-        <div className="h-[140px]">
         <table className="border border-black mt-12 w-full">
           <thead>
             <tr>
@@ -112,31 +126,30 @@ const Select = () => {
             })}
           </tbody>
         </table>
-        </div>
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-3 py-1 bg-gray-300 rounded-l-md"
-            >
-              Previous
-            </button>
-            <span className="px-4 py-1 bg-gray-200">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 bg-gray-300 rounded-r-md"
-            >
-              Next
-            </button>
-          </div>
-        )}
       </div>
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-gray-300 rounded-l-md"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-1 bg-gray-200">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 bg-gray-300 rounded-r-md"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
