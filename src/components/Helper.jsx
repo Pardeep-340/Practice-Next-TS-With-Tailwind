@@ -75,4 +75,24 @@ export const focusTableList = [
         lastName: "Kumar",
         email: "anilkumar@gmail.com"
     },
+    {
+        firstName: "Pardeep",
+        lastName: "Dhariwal",
+        email: "pardeepjangra@gmail.com"
+    },
+    {
+        firstName: "Pardeep",
+        lastName: "Dhariwal",
+        email: "pardeepjangra@gmail.com"
+    },
+    {
+        firstName: "Pardeep",
+        lastName: "Dhariwal",
+        email: "pardeepjangra@gmail.com"
+    },
+    {
+        firstName: "Sandeep",
+        lastName: "Kumar",
+        email: "sandeepkumar@gmail.com"
+    },
 ]
