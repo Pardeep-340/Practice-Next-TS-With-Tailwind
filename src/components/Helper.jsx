@@ -13,7 +13,7 @@ export const focusTableList = [
     {
         firstName: "Surender",
         lastName: "Singh",
-        email: "Surendersingh@gmail.com",
+        email: "surendersingh@gmail.com",
     },
     {
         firstName: "Ankit",
@@ -38,7 +38,7 @@ export const focusTableList = [
     {
         firstName: "Surender",
         lastName: "Singh",
-        email: "Surendersingh@gmail.com",
+        email: "surendersingh@gmail.com",
     },
     {
         firstName: "Ankit",
@@ -63,7 +63,7 @@ export const focusTableList = [
     {
         firstName: "Surender",
         lastName: "Singh",
-        email: "Surendersingh@gmail.com",
+        email: "surendersingh@gmail.com",
     },
     {
         firstName: "Ankit",
